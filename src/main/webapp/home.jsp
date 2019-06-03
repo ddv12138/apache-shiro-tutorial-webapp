@@ -38,10 +38,10 @@
             //tutorial, we'll just pull out Stormpath Account data from Shiro's PrincipalCollection to reference in the
             //<c:out/> tag next:
 
-            request.setAttribute("account", org.apache.shiro.SecurityUtils.getSubject().getPrincipals().oneByType(java.util.Map.class));
+            request.setAttribute("account", org.apache.shiro.SecurityUtils.getSubject().getPrincipals());
 
         %>
-        <c:out value="${account.givenName}"/></shiro:user>!
+        <c:out value="${account}"/></shiro:user>!
         ( <shiro:user><a href="<c:url value="/logout"/>">Log out</a></shiro:user>
         <shiro:guest><a href="<c:url value="/login.jsp"/>">Log in</a></shiro:guest> )
     </p>
@@ -50,6 +50,12 @@
 
     <shiro:authenticated><p>Visit your <a href="<c:url value="/account"/>">account page</a>.</p></shiro:authenticated>
     <shiro:notAuthenticated><p>If you want to access the authenticated-only <a href="<c:url value="/account"/>">account page</a>,
+        you will need to log-in first.</p></shiro:notAuthenticated>
+		
+		
+		
+	<shiro:authenticated><p>Visit your <a href="<c:url value="/rolecheck"/>">rolecheck page</a>.</p></shiro:authenticated>
+    <shiro:notAuthenticated><p>If you want to access the authenticated-only <a href="<c:url value="/rolecheck"/>">rolecheck page</a>,
         you will need to log-in first.</p></shiro:notAuthenticated>
 
     <h2>Roles</h2>
@@ -77,7 +83,8 @@
 
     <ul>
         <li>You may <shiro:lacksPermission name="ship:NCC-1701-D:command"><b>NOT</b> </shiro:lacksPermission> command the <code>NCC-1701-D</code> Starship!</li>
-        <li>You may <shiro:lacksPermission name="user:${account.username}:edit"><b>NOT</b> </shiro:lacksPermission> edit the ${account.username} user!</li>
+        <li>You may <shiro:lacksPermission name="user:edit:${account}"><b>NOT</b> </shiro:lacksPermission> edit the ${account} user!</li>
+		<li>You may <shiro:lacksPermission name="1:${account}"><b>NOT</b> </shiro:lacksPermission> edit the ${account} res!</li>
     </ul>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
